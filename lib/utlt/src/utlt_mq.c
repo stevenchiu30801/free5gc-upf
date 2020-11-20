@@ -74,13 +74,13 @@ Status MQRecv(MQId mqId, char *msg, int msgLen) {
     UTLT_Assert(msgLen >= mq->msgsize, return STATUS_ERROR,
                 "Receive buffer size must larger or equal to the msg size of the queue");
 
-    if (mq_receive(mq->mqd, msg, msgLen, NULL) < 0) {
-        if (errno == EAGAIN) {
-            return STATUS_EAGAIN;
-        } else {
-            UTLT_Assert(0, return STATUS_ERROR, 
-                    "Error receiving message: %s", strerror(errno));
-        }
+    ssize_t n;
+    n = mq_receive(mq->mqd, msg, msgLen, NULL);
+    if (n < 0) {
+        UTLT_Assert(0, return STATUS_ERROR,
+            "Error receiving message: %s", strerror(errno));
+    } else if (n == 0) {
+        return STATUS_EMPTYMSG;
     }
 
     return STATUS_OK;

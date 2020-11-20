@@ -77,7 +77,7 @@ static void eventConsumer() {
     while (1) {
         status = EventRecv(Self()->eventQ, &event);
         if (status != STATUS_OK) {
-            if (status == STATUS_EAGAIN) {
+            if (status == STATUS_EMPTYMSG) {
                 continue;
             } else {
                 UTLT_Assert(0, break, "Event receive fail");
