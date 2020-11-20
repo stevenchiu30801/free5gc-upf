@@ -125,6 +125,8 @@ static int _gtp_dev_create(int dest_ns, const char *gtp_ifname, int fd,
 
 	if (dest_ns >= 0)
 		mnl_attr_put_u32(nlh, IFLA_NET_NS_FD, dest_ns);
+	mnl_attr_put_u32(nlh, IFLA_NUM_TX_QUEUES, 8);
+	mnl_attr_put_u32(nlh, IFLA_NUM_RX_QUEUES, 8);
 	mnl_attr_put_str(nlh, IFLA_IFNAME, gtp_ifname);
 	nest = mnl_attr_nest_start(nlh, IFLA_LINKINFO);
 	mnl_attr_put_str(nlh, IFLA_INFO_KIND, "gtp5g");
